@@ -2,6 +2,8 @@
 
 ---
 
+[Access the challenge](https://ropemporium.com/challenge/split.html)
+
 ```bash
 ❯ ./split
 split by ROP Emporium
