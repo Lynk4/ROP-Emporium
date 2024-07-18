@@ -2,6 +2,20 @@
 
 ---
 
+```bash
+❯ ./split
+split by ROP Emporium
+x86_64
+
+Contriving a reason to ask user for data...
+> hy....
+Thank you!
+
+Exiting
+```
+
+---
+
 Basic file check:
 
 ```bash
