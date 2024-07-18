@@ -3,6 +3,23 @@
 [Access the challenge](https://ropemporium.com/challenge/ret2win.html)
 ---
 
+```bash
+❯ ./ret2win
+ret2win by ROP Emporium
+x86_64
+
+For my first trick, I will attempt to fit 56 bytes of user input into 32 bytes of stack buffer!
+What could possibly go wrong?
+You there, may I have your input please? And don't worry about null bytes, we're using read()!
+
+> hey....
+Thank you!
+
+Exiting
+
+```
+---
+
 basic file check:
 
 ```bash
